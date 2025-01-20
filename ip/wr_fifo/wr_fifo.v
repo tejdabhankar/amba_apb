@@ -43,7 +43,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-`define IP_UUID _b25dbdbb3b7a4c8a9d3b6597a7bb9afc
+`define IP_UUID _23ff4eabae65403ca941cd193fd19385
 `define IP_NAME_CONCAT(a,b) a``b
 `define IP_MODULE_NAME(name) `IP_NAME_CONCAT(name,`IP_UUID)
 module wr_fifo (
