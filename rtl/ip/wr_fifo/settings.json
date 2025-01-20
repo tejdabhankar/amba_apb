@@ -1,0 +1,45 @@
+{
+    "args": [
+        "-o",
+        "wr_fifo",
+        "--base_path",
+        "/home/tej/Vicharak/FPGA_implementation/rah/ip",
+        "--vlnv",
+        {
+            "vendor": "efinixinc.com",
+            "library": "memory",
+            "name": "efx_fifo_top",
+            "version": "5.1"
+        }
+    ],
+    "conf": {
+        "SYNC_CLK": "0",
+        "SYNC_STAGE": "2",
+        "DEPTH_2": "11",
+        "DATA_WIDTH": "48",
+        "MODE": "\"STANDARD\"",
+        "OUTPUT_REG": "0",
+        "PROG_FULL_ASSERT": "2046",
+        "PROGRAMMABLE_FULL": "\"STATIC_SINGLE\"",
+        "PFN_INTERNAL": "2045",
+        "PEA_INTERNAL": "2",
+        "PEN_INTERNAL": "3",
+        "PROGRAMMABLE_EMPTY": "\"NONE\"",
+        "OPTIONAL_FLAGS": "1",
+        "PIPELINE_REG": "1",
+        "FAMILY": "\"TRION\"",
+        "ASYM_WIDTH_RATIO": "4",
+        "BYPASS_RESET_SYNC": "0",
+        "ENDIANESS": "0"
+    },
+    "output": {
+        "external_source_source": [
+            "/home/tej/Vicharak/FPGA_implementation/rah/ip/wr_fifo/wr_fifo_define.vh",
+            "/home/tej/Vicharak/FPGA_implementation/rah/ip/wr_fifo/wr_fifo_tmpl.v",
+            "/home/tej/Vicharak/FPGA_implementation/rah/ip/wr_fifo/wr_fifo.v",
+            "/home/tej/Vicharak/FPGA_implementation/rah/ip/wr_fifo/wr_fifo_tmpl.vhd"
+        ]
+    },
+    "sw_version": "2023.2.307",
+    "generated_date": "2025-01-20T06:06:05.689590"
+}
