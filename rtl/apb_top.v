@@ -26,7 +26,7 @@ reg r_wr_fifo_read_rn;
 /* append into the apb_fifo. The reason is fifo of rah is
 /* too small so we maintain our own fifo to keep the data being 
 /* loss and corrupted */
-always @(posedge clk) begin
+always @(posedge dt_clk) begin
 	if (!pp_wr_fifo_empty) begin
 		r_wr_fifo_read_rn <= 1'b1;
 	end else begin
@@ -36,6 +36,9 @@ end
 
 /* wire declaration */
 wire [RAH_PACKET_WIDTH-1:0] w_apb_fifo_data;
+wire [RAH_PACKET_WIDTH-1:0] w_data;
+wire [6:0] w_slv_id;
+wire [7:0] w_length;
 
 wr_apb_fifo wr_apb_fifo(
     .wr_clk_i       (dt_clk),
@@ -45,21 +48,27 @@ wr_apb_fifo wr_apb_fifo(
     .rd_en_i        (w_apb_fifo_rd_en),
     .rdata          (w_apb_fifo_data),
     .empty_o        (w_apb_fifo_empty),
+	.almost_empty_o (w_apb_fifo_a_empty)
 );
 
 apb_decoder #(
 	.RAH_PACKET_WIDTH(RAH_PACKET_WIDTH)
 )apb_dec(
-	.clk            (dt_clk)
+	.clk            (dt_clk),
 	.f_empty 		(w_apb_fifo_empty),
 	.f_data			(w_apb_fifo_data),
 	.f_rd_en		(w_apb_fifo_rd_en),
-
-
+	.f_a_empty 		(w_apb_fifo_a_empty),
+	
+	.slv_id			(w_slv_id),
+	.cfg_sel		(w_config),
+	.data			(w_data),
+	.length			(w_length),
+	.first_frame	(w_first_frame)
 );
 
 /* assignment */
-assign pp_wr_fifo_read_en <= r_wr_fifo_read_rn;
-assign w_wr_fifo_read_en <= r_wr_fifo_read_rn;
+assign pp_wr_fifo_read_en = r_wr_fifo_read_rn;
+assign w_wr_fifo_read_en = r_wr_fifo_read_rn;
 
 endmodule
