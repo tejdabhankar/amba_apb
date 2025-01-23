@@ -1,5 +1,5 @@
 module apb_interface #(
-	parameter DATA_WIDTH = 32,
+	parameter DATA_WIDTH = 16,
 	parameter ADDR_WIDTH = 8)
 (
 	/* clock */

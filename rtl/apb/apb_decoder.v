@@ -17,8 +17,8 @@ parameter RAH_PACKET_WIDTH = 48)
 	output [47:0] data,
 	output length,
 	output first_frame,
-	output dt_frame_en
-
+	output dt_frame_en,
+	input  data_hold_flag
 );
 
 reg [RAH_PACKET_WIDTH-1:0] r_fifo_data;
@@ -32,11 +32,11 @@ reg [7:0] r_length;
 reg r_first_frame;
 reg r_dt_frame_en;
 always @(posedge clk) begin
-	if(!f_data) begin
+	if(!f_data && !data_hold_flag) begin
 		r_rd_en <= 1;
 	end
 
-	if (f_a_empty && r_rd_en) begin
+	if ((f_a_empty && r_rd_en) || data_hold_flag) begin
 		r_rd_en <= 0;
 	end
 
@@ -48,7 +48,7 @@ always @(posedge clk) begin
 			r_slv_id <= f_data[46:40];
 			r_length <= f_data[39:32];	
 			r_data <= f_data[47:0];
-			
+
 			if (f_data[39:32] >8'h3) begin
 				r_data_flag <= 1'b1;
 				r_first_frame <= 1'b1;
