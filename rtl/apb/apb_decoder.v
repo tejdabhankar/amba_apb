@@ -1,4 +1,6 @@
 module apb_decoder #(
+parameter LENGTH_WIDTH = 7,
+parameter SLV_ID_WIDTH = 7)
 parameter RAH_PACKET_WIDTH = 48)
 (
 	/* Clock Signals */
@@ -11,11 +13,11 @@ parameter RAH_PACKET_WIDTH = 48)
 	input f_a_empty,
 
 	/* interface signal */
-	
-	output [6:0] slv_id,
+
+	output [SLV_ID_WIDTH-1:0] slv_id,
+	output [LENGTH_WIDTH-1:0] length,
+	output [RAH_PACKET_WIDTH-1:0] wr_data,
 	output cfg_sel,
-	output [47:0] data,
-	output length,
 	output first_frame,
 	output dt_frame_en,
 	input  data_hold_flag
@@ -27,8 +29,8 @@ reg r_rd_en;
 reg flag_data_sample;
 reg r_data_flag;
 reg r_config_sel;
-reg [6:0] r_slv_id;
-reg [7:0] r_length;
+reg [SLV_ID_WIDTH-1:0] r_slv_id;
+reg [LENGTH_WIDTH-1:0] r_length;
 reg r_first_frame;
 reg r_dt_frame_en;
 always @(posedge clk) begin
@@ -46,7 +48,8 @@ always @(posedge clk) begin
 		if (!r_data_flag) begin
 			r_config_sel <= f_data[47];
 			r_slv_id <= f_data[46:40];
-			r_length <= f_data[39:32];	
+			r_read_write <= f_data[39];
+			r_length <= f_data[38:32];	
 			r_data <= f_data[47:0];
 
 			if (f_data[39:32] >8'h3) begin
@@ -62,17 +65,17 @@ always @(posedge clk) begin
 			r_data <= f_data[47:0];
 			
             if (r_first_frame) begin // For first data frame
-                r_length <= r_length - 4;
+                r_length <= r_length - 2;
                 r_first_frame <= 0;
 
-                if((r_length - 4) < 4'h6) begin
+                if((r_length - 2) < 4'h6) begin
                     r_data_flag <= 0;
                 end
 
             end else begin // For other than first data frame
-                r_length <= r_length - 6;
+                r_length <= r_length - 3;
 
-                if ((r_length - 6) < 4'h6) begin
+                if ((r_length - 4) < 4'h6) begin
                     r_data_flag <= 0;
                 end
             end

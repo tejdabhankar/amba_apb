@@ -4,7 +4,7 @@ module apb_data_controller #(
 parameter RAH_PACKET_WIDTH= 48,
 parameter CONFIG_DATA_WIDTH = 40,
 parameter WRITE_DATA_WIDTH = 16,
-parameter LENGTH_WIDTH = 8,
+parameter LENGTH_WIDTH = 7,
 parameter SLV_ID_WIDTH = 7)
 (
 /* Clock Signals */
@@ -17,6 +17,7 @@ parameter SLV_ID_WIDTH = 7)
 	input cfg_sel,
 	input first_frame,
 	input dt_frame_en,
+	input read_write_sel,
 
 	output write_en,
 	output [31:0] write_data,
@@ -52,6 +53,7 @@ always @(posedge clk) begin
 			r_slv_sel[slv_id] <= 1'b1;
 			r_addr <= 8'b10110011;
 			r_wr_en <= 1'b1;
+			r_read_write_Sel <= 
 			if (first_frame) begin
 				if (counter <2) begin
 					counter <= counter + 1'b1;
